@@ -7,31 +7,83 @@ var desLolButton = menu.querySelector(".lol p")
 
 var upgradeButton = menu.querySelector(".onClickUpgrade button")
 var desUpgradeButton = menu.querySelector(".onClickUpgrade p")
-loadLol = localStorage.getItem("lol")
 
-var lol = parseInt(localStorage.getItem("lolValue"))
-if (!lol) {
-    lol = 0
-}
-var onClickLol = 1
+var savaButton = document.querySelector(".saveBt")
+var deleteSaveButton = document.querySelector(".deleteSaveBt")
+
+var lol = 0
+var lolOnClick = 1
 var costUpgrade = 10;
+var increaseCostUpgrade = 8
+
+LoadDate()
+UpdateText()
 
 lolButton.onclick = () => {
-    lol += onClickLol
-    statLol.textContent = "LOL: " + lol
+    for(var i = 0; i < lolOnClick; i++){
+        console.log('Taking a break...');
+        await new Promise(r => setTimeout(r, 5000));
+        console.log('Two second later')
+    }
 
-    localStorage.setItem("lolValue", lol)
+    UpdateText()
 }
 
 upgradeButton.onclick = () => {
     if (lol >= costUpgrade) {
-        onClickLol++
+        lolOnClick++
         lol -= costUpgrade
-        costUpgrade += costUpgrade / 4 - costUpgrade / 4 % 1
-
-        desUpgradeButton.textContent = "Cost: " + costUpgrade + "LOL"
-
-        desLolButton.textContent = "+" + onClickLol + "LOL"
-        statLol.textContent = "LOL: " + lol
+        costUpgrade += costUpgrade / increaseCostUpgrade - costUpgrade / increaseCostUpgrade % 1
+        UpdateText()
     }
+}
+
+savaButton.onclick = () => {
+    SaveDate()    
+}
+
+deleteSaveButton.onclick = DeleteSave()
+
+function SaveDate(){
+    localStorage.setItem("lolValue", lol)
+    localStorage.setItem("lolOnClick", lolOnClick)
+    localStorage.setItem("costUpgrade", costUpgrade)
+}
+
+function LoadDate(){
+    lol = parseInt(localStorage.getItem("lolValue"))
+    if(!lol){
+        lol = 0
+    }
+
+    lolOnClick = parseInt(localStorage.getItem("lolOnClick"))
+    if(!lolOnClick){
+        lolOnClick = 1
+    }
+
+    costUpgrade = parseInt(localStorage.getItem("costUpgrade"))
+    if(!costUpgrade){
+        costUpgrade = 10
+    }
+}
+
+function DeleteSave (){
+    localStorage.removeItem("lolValue")
+
+    localStorage.removeItem("lolOnClick")
+    localStorage.removeItem("costUpgrade")
+}
+
+
+function UpdateText(){
+    //update upgrade text 
+    desUpgradeButton.textContent = "Cost: " + costUpgrade + "LOL"
+    
+    //update lol on click text 
+    desLolButton.textContent = "+" + lolOnClick + "LOL"
+    statLol.textContent = "LOL: " + lol
+}
+
+function sleep(ms){
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
