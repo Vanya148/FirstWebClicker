@@ -20,12 +20,7 @@ LoadDate()
 UpdateText()
 
 lolButton.onclick = () => {
-    for(var i = 0; i < lolOnClick; i++){
-        console.log('Taking a break...');
-        await new Promise(r => setTimeout(r, 5000));
-        console.log('Two second later')
-    }
-
+    lol += lolOnClick
     UpdateText()
 }
 
